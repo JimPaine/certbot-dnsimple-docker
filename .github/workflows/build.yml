@@ -1,0 +1,16 @@
+name: build
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: docker login
+        run: docker login -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }} ghcr.io
+      - name: docker build
+        run: docker build -t ghcr.io/jimpaine/certbot-dnsimple-docker:0.1.${{ github.RUN_NUMBER }} .
+      - name: docker push
+        run: docker push ghcr.io/jimpaine/certbot-dnsimple-docker:0.1.${{ github.RUN_NUMBER }}
